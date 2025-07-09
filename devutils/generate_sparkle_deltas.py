@@ -2,9 +2,14 @@ import os
 import argparse
 import subprocess
 import tempfile
-
+import requests
 from time import sleep
-from requests import request
+
+GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN')
+REQUEST_HEADERS = {}
+if GITHUB_TOKEN is not None:
+  REQUEST_HEADERS['Authorization'] = f'Bearer {GITHUB_TOKEN}'
+  print('using github token for api requests')
 
 class mount(object):
     def __init__(self, dmg, mountpoint):
@@ -25,7 +30,10 @@ def get_asset_url(release, arch):
 
 def get_historic_dmg_urls():
   repo = os.environ.get('GITHUB_REPOSITORY', 'imputnet/helium-macos')
-  response = request('GET', f'https://api.github.com/repos/{repo}/releases?per_page=5')
+  response = requests.get(
+    f'https://api.github.com/repos/{repo}/releases?per_page=5',
+    headers=REQUEST_HEADERS,
+  )
   response.raise_for_status()
 
   urls = {}
@@ -65,7 +73,7 @@ def generate_delta_for(version, urls, args):
       continue
 
     with tempfile.NamedTemporaryFile(suffix='.dmg') as f:
-      with request('GET', urls[i], stream=True) as r:
+      with requests.get(urls[i], headers=REQUEST_HEADERS, stream=True) as r:
         r.raise_for_status()
         f.write(r.content)
       print(f.name)
