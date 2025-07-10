@@ -47,6 +47,7 @@ jobs:
         with:
           arch: ${{ inputs.arch }}
           os: ${{ inputs.os }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MACOS_CERTIFICATE: ${{ secrets.PROD_MACOS_CERTIFICATE }}
           MACOS_CERTIFICATE_PWD: ${{ secrets.PROD_MACOS_CERTIFICATE_PWD }}
           MACOS_CERTIFICATE_NAME: ${{ secrets.PROD_MACOS_CERTIFICATE_NAME }}
