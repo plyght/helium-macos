@@ -20,6 +20,7 @@ helium/macos/fix-pwa-shims.patch
 helium/macos/replace-email-shortcut-with-devtools.patch
 helium/macos/traffic-lights-positioning.patch
 helium/macos/clean-main-menu.patch
+helium/macos/disable-immersive-fullscreen.patch
 
 extra/rebel/macos/sparkle-integration.patch
 helium/macos/updater/fixup-sparkle-glue.patch
