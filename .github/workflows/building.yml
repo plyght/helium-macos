@@ -136,3 +136,14 @@ jobs:
     with:
       arch: ${{ inputs.arch }}
       os: ${{ inputs.os }}
+
+  build_job_10:
+    needs: build_job_09
+    if: ${{needs.build_job_09.outputs.status == 'running'}}
+    uses: ./.github/workflows/build-step.yml
+    secrets: inherit
+    permissions:
+      contents: write
+    with:
+      arch: ${{ inputs.arch }}
+      os: ${{ inputs.os }}
