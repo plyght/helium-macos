@@ -67,6 +67,10 @@ else
   echo 'target_cpu = "x64"' >> "$_src_dir/out/Default/args.gn"
 fi
 
+if $clone; then
+  echo 'chrome_pgo_phase=2' >> "$_src_dir/out/Default/args.gn"
+fi
+
 mkdir -p "$_src_dir/third_party/llvm-build/Release+Asserts"
 mkdir -p "$_src_dir/third_party/rust-toolchain/bin"
 

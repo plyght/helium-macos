@@ -27,6 +27,9 @@ if ! [ -z "${PROD_MACOS_SPARKLE_ED_PUB_KEY-}" ]; then
   echo 'sparkle_ed_key="'"$PROD_MACOS_SPARKLE_ED_PUB_KEY"'"' >> "$_src_dir/out/Default/args.gn"
 fi
 
+echo 'symbol_level=0' >> "$_src_dir/out/Default/args.gn"
+echo 'chrome_pgo_phase=2' >> "$_src_dir/out/Default/args.gn"
+
 cd "$_src_dir"
 
 ./tools/gn/bootstrap/bootstrap.py -o out/Default/gn --skip-generate-buildfiles
