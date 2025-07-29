@@ -4,5 +4,5 @@
 
 brew install ninja coreutils ccache --overwrite
 
-# Install httplib2 for Python from PyPI
-pip3 install httplib2 requests --break-system-packages
+# Install Python dependencies from PyPI
+pip3 install httplib2 requests pillow --break-system-packages
