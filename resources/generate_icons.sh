@@ -34,11 +34,18 @@ generate_iconset() {
     rm -rf "$out"
 }
 
-resources_dir=$(dirname $(greadlink -f $0))
+_root_dir="$(dirname "$(dirname "$(greadlink -f "$0")")")"
+_main_repo="$_root_dir/helium-chromium"
+_resources_dir="$_main_repo/resources"
+_platform_resources="$_root_dir/resources"
 
-if [ ! -d "${resources_dir}/generated" ]; then
-    mkdir "${resources_dir}/generated"
+if [ ! -d "${_platform_resources}/generated" ]; then
+    mkdir "${_platform_resources}/generated"
 fi
 
-generate_iconset "${resources_dir}/icons/IconFull.png" "${resources_dir}/generated/app.icns" "${resources_dir}/icons/IconCropped.png"
-generate_iconset "${resources_dir}/icons/IconFile.png" "${resources_dir}/generated/document.icns"
+generate_iconset "${_resources_dir}/branding/app_icon/shadow.png" \
+    "${_platform_resources}/generated/app.icns" \
+    "${_resources_dir}/branding/app_icon/shadow_cropped.png"
+
+generate_iconset "${_resources_dir}/branding/app_icon/file.png" \
+    "${_platform_resources}/generated/document.icns"
