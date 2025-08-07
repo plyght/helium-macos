@@ -1,6 +1,6 @@
 --- a/components/os_crypt/sync/keychain_password_mac.mm
 +++ b/components/os_crypt/sync/keychain_password_mac.mm
-@@ -30,13 +30,8 @@ namespace {
+@@ -31,13 +31,8 @@ namespace {
  // These two strings ARE indeed user facing.  But they are used to access
  // the encryption keyword.  So as to not lose encrypted data when system
  // locale changes we DO NOT LOCALIZE.

@@ -11,7 +11,7 @@
      {IDC_BASIC_PRINT, ui::EF_COMMAND_DOWN | ui::EF_ALT_DOWN, ui::VKEY_P},
 --- a/chrome/browser/ui/cocoa/share_menu_controller.mm
 +++ b/chrome/browser/ui/cocoa/share_menu_controller.mm
-@@ -96,12 +96,6 @@ bool CanShare() {
+@@ -99,12 +99,6 @@ bool CanShare() {
    // to fetch sharing services that can handle the NSURL type.
    NSArray* services = [NSSharingService
        sharingServicesForItems:@[ [NSURL URLWithString:@"https://google.com"] ]];
@@ -24,7 +24,7 @@
    for (NSSharingService* service in services) {
      // Email share service causes mysterious crashes, so share directly.
      // See https://crbug.com/356643975
-@@ -295,13 +289,4 @@ bool CanShare() {
+@@ -298,13 +292,4 @@ bool CanShare() {
    return item;
  }
  
