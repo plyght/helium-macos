@@ -106,7 +106,7 @@
        ns_window = [[NativeWidgetMacFramelessNSWindow alloc]
 --- a/chrome/browser/ui/views/frame/browser_non_client_frame_view_mac.mm
 +++ b/chrome/browser/ui/views/frame/browser_non_client_frame_view_mac.mm
-@@ -52,7 +52,7 @@ constexpr double kTitlePaddingWidthFract
+@@ -49,7 +49,7 @@ namespace {
  
  // Empirical measurements of the traffic lights.
  constexpr int kCaptionButtonsWidth = 52;
@@ -115,7 +115,7 @@
  
  FullscreenToolbarStyle GetUserPreferredToolbarStyle(bool always_show) {
    // In Kiosk mode, we don't show top Chrome UI.
-@@ -179,7 +179,7 @@ gfx::Rect BrowserNonClientFrameViewMac::
+@@ -176,7 +176,7 @@ gfx::Rect BrowserNonClientFrameViewMac::
    if (frame()->IsFullscreen()) {
      if (!browser_view()->UsesImmersiveFullscreenMode()) {
        bounds.Inset(
