@@ -9,10 +9,12 @@ ___helium_setup_gn() {
     local OUT_FILE="$_src_dir/out/Default/args.gn"
     cat "$_main_repo/flags.gn" "$_root_dir/flags.macos.gn" > "$OUT_FILE"
 
-    if command -v ccache 2>&1 >/dev/null; then
+    if command -v sccache 2>&1 >/dev/null; then
+        echo 'cc_wrapper="sccache"' >> "$OUT_FILE"
+    elif command -v ccache 2>&1 >/dev/null; then
         echo 'cc_wrapper="env CCACHE_SLOPPINESS=time_macros ccache"' >> "$OUT_FILE"
     else
-        echo 'warn: ccache is not available' >&2
+        echo 'warn: sccache or ccache is not available' >&2
     fi
 
     local TARGET_CPU="x64"
