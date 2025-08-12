@@ -1,6 +1,11 @@
 name: Build macOS binaries of Helium
 on:
   workflow_dispatch:
+    inputs:
+      runner:
+        required: false
+        description: 'Runner image name'
+        default: 'macos-latest'
 
 permissions:
   contents: write
@@ -17,12 +22,12 @@ jobs:
     secrets: inherit
     with:
       arch: ${{ matrix.arch }}
-      os: macos-15
+      os: ${{ github.event.inputs.runner }}
 
   release:
     needs: build
     name: Release macOS binaries of Helium
-    runs-on: macos-latest
+    runs-on: ${{ github.event.inputs.runner }}
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
