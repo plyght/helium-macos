@@ -26,6 +26,3 @@ runs:
     - name: Setup Environment and Toolchain
       run: ./github_setup_env_toolchain.sh ${{ inputs.arch }} | tee -a github_actions_setup_env_toolchain.log
       shell: bash
-    - name: increase ccache limit
-      run: ccache -M 10G
-      shell: bash

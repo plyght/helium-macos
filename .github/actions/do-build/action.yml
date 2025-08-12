@@ -35,20 +35,8 @@ runs:
       run: echo TS=$(date +%s) >> $GITHUB_ENV
       shell: bash
 
-    - name: Attempt to restore ccache
-      id: cacheload
-      uses: actions/cache/restore@v4
-      with:
-        path: /Users/runner/Library/Caches/ccache
-        key: ccache-${{ inputs.arch }}-${{ github.run_id }}-${{ env.TS }}
-        restore-keys: |
-          ccache-${{ inputs.arch }}-
-
-    - name: Show ccache stats before build
-      run: |
-        mkdir -p /Users/runner/Library/Caches/ccache \
-        && du -sh /Users/runner/Library/Caches/ccache \
-        && ccache -s
+    - name: Show sccache stats before build
+      run: sccache --show-stats
       shell: bash
 
     - name: Build
@@ -56,14 +44,9 @@ runs:
       run: ./github_build.sh ${{ inputs.arch }} 2>&1 | tee -a github_actions_build_${{ inputs.arch }}.log
       shell: bash
 
-    - name: Show ccache stats after build
-      run: du -sh /Users/runner/Library/Caches/ccache && ccache -s
+    - name: Show sccache stats after build
+      run: sccache --show-stats
       shell: bash
-    - name: Push the ccache cache
-      uses: actions/cache/save@v4
-      with:
-        path: /Users/runner/Library/Caches/ccache
-        key: ${{ steps.cacheload.outputs.cache-primary-key }}
 
     - name: Prepare archive of build as artifact
       id: bake
