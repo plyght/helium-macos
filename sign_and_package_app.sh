@@ -51,9 +51,27 @@ if ! [ -z "${MACOS_CERTIFICATE_NAME-}" ]; then
   ditto -c -k --keepParent "out/Default/Helium.app" "$TMPDIR/notarize.zip"
 
   # Notarize the app
-  xcrun notarytool store-credentials "notarytool-profile" --apple-id "$PROD_MACOS_NOTARIZATION_APPLE_ID" --team-id "$PROD_MACOS_NOTARIZATION_TEAM_ID" --password "$PROD_MACOS_NOTARIZATION_PWD"
-  xcrun notarytool submit "$TMPDIR/notarize.zip" --keychain-profile "notarytool-profile" --wait
-  xcrun stapler staple "out/Default/Helium.app"
+  CUSTOM_KEYCHAIN_ARG=""
+
+  if ! [ -z "${CI-}" ]; then
+    CUSTOM_KEYCHAIN_ARG="--keychain=~/Library/Keychains/build.keychain-db"
+  fi
+
+  xcrun notarytool \
+    store-credentials "notarytool-profile" \
+    --apple-id "$PROD_MACOS_NOTARIZATION_APPLE_ID" \
+    --team-id "$PROD_MACOS_NOTARIZATION_TEAM_ID" \
+    --password "$PROD_MACOS_NOTARIZATION_PWD" \
+    $CUSTOM_KEYCHAIN_ARG
+
+  xcrun notarytool \
+    submit "$TMPDIR/notarize.zip" \
+    --keychain-profile "notarytool-profile" \
+    --wait \
+    $CUSTOM_KEYCHAIN_ARG
+
+  xcrun stapler \
+    staple "out/Default/Helium.app"
 
   rm "$TMPDIR/notarize.zip"
 
