@@ -306,7 +306,7 @@
 +#endif  /* THIRD_PARTY_SPARKLE_SPARKLE_SPUHEADLESSUSERDRIVER_H_ */
 --- /dev/null
 +++ b/third_party/sparkle/Sparkle/SPUHeadlessUserDriver.m
-@@ -0,0 +1,84 @@
+@@ -0,0 +1,82 @@
 +// Copyright 2025 The Helium Authors
 +// You can use, redistribute, and/or modify this source code under
 +// the terms of the GPL-3.0 license that can be found in the LICENSE file.
@@ -389,8 +389,6 @@
 +{}
 +
 +@end
-+
-+#endif  /* THIRD_PARTY_SPARKLE_SPARKLE_SPUHEADLESSUSERDRIVER_H_ */
 --- a/chrome/browser/app_controller_mac.mm
 +++ b/chrome/browser/app_controller_mac.mm
 @@ -38,6 +38,7 @@
