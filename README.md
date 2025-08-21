@@ -1,6 +1,34 @@
 # helium-macos
 macOS development tooling & packaging for [helium-chromium](//github.com/imputnet/helium-chromium).
 
+## Pre-release usage
+> [!IMPORTANT]
+> It's incredibly important to keep your web browser up to date, even just for the
+> sake of security patches. Please read this section.
+
+Since we can't stop you from using Helium before the official release, the least we
+can do is teach you how to enable automatic updates to keep your browser up to date:
+1. Open `helium://flags/#helium-update-channel` in Helium.
+2. Switch the update channel to `beta`.
+3. Relaunch the browser and enjoy automatic updates.
+
+> [!NOTE]
+> As context implies, this will switch your browser to the `beta` channel. Updates in this
+> channel are not stable, but since it's the only available channel at the time of writing,
+> it's better than nothing. After the public release, we recommend switching to the
+> `automatic`/`stable` branch. Otherwise, you'll continue receiving beta versions
+> that are not fully polished yet. You're responsible for this, not us.
+
+Updates are installed in the background but only when the browser is open. To update,
+just restart Helium. Newer versions of Helium tell you when it's time to update and give
+you a convenient button to do it in one click.
+
+To manually trigger a check for updates, open the About page from the app menu or
+go to `helium://help`.
+
+Auto-updates will work only if Helium services are enabled. Otherwise, you'll have to manually
+install new versions from [releases on GitHub](https://github.com/imputnet/helium-macos/releases).
+
 ## Credits
 This repo is based on
 [ungoogled-chromium-macos](https://github.com/ungoogled-software/ungoogled-chromium-macos),
