@@ -10,18 +10,15 @@ _src_dir="$_root_dir/build/src"
 # If build finished successfully
 if [[ -f "$_root_dir/build_finished_$_target_cpu.log" ]] ; then
   # For packaging
-  _chromium_version=$(cat $_root_dir/helium-chromium/chromium_version.txt)
-  _ungoogled_revision=$(cat $_root_dir/helium-chromium/revision.txt)
-  _package_revision=$(cat $_root_dir/revision.txt)
   _helium_version=$(python3 "$_main_repo/utils/helium_version.py" --tree "$_main_repo" --platform-tree "$_root_dir" --print)
 
   _file_name="helium_${_helium_version}_${_target_cpu}-macos.dmg"
   _hash_name="${_file_name}.hashes.md"
-  
+
   cd "$_src_dir"
 
   xattr -cs out/Default/Helium.app
-  
+
   # Prepar the certificate for app signing
   echo $MACOS_CERTIFICATE | base64 --decode > "$TMPDIR/certificate.p12"
 
@@ -36,7 +33,7 @@ if [[ -f "$_root_dir/build_finished_$_target_cpu.log" ]] ; then
     echo "$PROD_MACOS_SPECIAL_ENTITLEMENTS_PROFILE_B64" \
       | base64 --decode > "$PROD_MACOS_SPECIAL_ENTITLEMENTS_PROFILE_PATH"
   fi
-  
+
   export OUT_DMG_PATH="$_root_dir/$_file_name"
   "$_root_dir/sign_and_package_app.sh"
 
@@ -47,13 +44,13 @@ if [[ -f "$_root_dir/build_finished_$_target_cpu.log" ]] ; then
   cd "$_root_dir"
   echo -e "md5: \nsha1: \nsha256: " | tee ./hash_types.txt
   { md5sum "$_file_name" ; sha1sum "$_file_name" ; sha256sum "$_file_name" ; } | tee ./sums.txt
-  
+
   _hash_md=$(paste ./hash_types.txt ./sums.txt | awk '{print $1 " " $2}')
 
   echo "file_name=$_file_name" >> $GITHUB_OUTPUT
 
   _gh_run_href="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
-  
+
   printf '[Hashes](https://en.wikipedia.org/wiki/Cryptographic_hash_function) for the disk image `%s`: \n' "$_file_name" | tee -a ./${_hash_name}
   printf '\n```\n%s\n```\n' "$_hash_md" | tee -a ./${_hash_name}
 
