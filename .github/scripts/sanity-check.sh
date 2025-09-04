@@ -4,9 +4,9 @@ set -exo pipefail
 sudo mdutil -a -i off
 sudo xcode-select --switch /Applications/Xcode_16.4.app
 
-brew install ninja coreutils python@3.13 quilt llvm --overwrite
+brew install ninja coreutils python@3.13 quilt llvm@20 --overwrite
 brew unlink python || true
-brew link python@3.13 --force
+brew link python@3.13 llvm@20 --force
 
 pip3.13 install httplib2 requests Pillow --break
 
