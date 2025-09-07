@@ -72,7 +72,13 @@
  
  // Attempt to relaunch browser and install updates if any.
  void RelaunchBrowserUsingSparkle();
-@@ -80,6 +86,12 @@ std::u16string CurrentlyDownloadedVersio
+@@ -75,11 +81,17 @@ bool SparkleEnabled();
+ 
+ // The version of the application currently downloaded and ready to be installed
+ // (with NEARLY_UPDATED status).
+-std::u16string CurrentlyDownloadedVersion();
++std::optional<std::string> CurrentlyDownloadedVersion();
+ 
  // Check if current application has an update which is ready to be installed.
  bool ApplicationIsNearlyUpdated();
  
@@ -206,16 +212,16 @@
  @implementation SparkleObserver {
 -  raw_ptr<Profile> profile_;
 +  base::WeakPtr<Profile> profile_;
- }
- 
--@synthesize appcastFeedUrl = appcastFeedUrl_;
++}
++
 +@synthesize invocationBlock = invocationBlock_;
 +@synthesize currentlyDownloadedVersion = currentlyDownloadedVersion_;
 +
 +- (BOOL)hasProfile {
 +  return (bool)profile_;
-+}
-+
+ }
+ 
+-@synthesize appcastFeedUrl = appcastFeedUrl_;
 +- (void)updateProfile:(Profile*)profile {
 +  if (!profile_ && profile) {
 +    profile_ = profile->GetWeakPtr();
@@ -350,49 +356,36 @@
 +  return base::SysUTF8ToNSString(
 +    helium::GetBrowserUpdateURL(*profile_->GetPrefs()).spec());
 +}
-+
-+- (void)updater:(SPUUpdater*)updater failedToDownloadUpdate:(NSError*)error {
-+  [self updateStatus:VersionUpdater::FAILED
-+        error_string:[error.localizedDescription copy]];
-+}
-+
-+- (nonnull NSSet<NSString *> *)allowedChannelsForUpdater:
-+    (nonnull SPUUpdater *)updater
-+{
-+    NSString *channel = base::SysUTF8ToNSString(
-+      helium::GetSelectedChannel());
-+    return [NSSet setWithObject:channel];
-+}
  
 -  self.appcastFeedUrl =
 -      [NSString stringWithCString:update_url.c_str()
 -                         encoding:[NSString defaultCStringEncoding]];
 -  return self.appcastFeedUrl;
-+- (void)updateStatus:(VersionUpdater::Status)status
-+        error_string:(NSString*)error_string {
-+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-+  status_callbacks_.Notify(status, 0, error_string);
++- (void)updater:(SPUUpdater*)updater failedToDownloadUpdate:(NSError*)error {
++  [self updateStatus:VersionUpdater::FAILED
++        error_string:[error.localizedDescription copy]];
  }
  
 -// Delegated method. Override the version comparator to check if the user has
 -// decided to switch channels.
 -- (id<SUVersionComparison>)versionComparatorForUpdater:(SUUpdater*)updater {
 -  return [[ChannelRespectingVersionComparator alloc] initWithProfile:profile_];
-+- (void)updateProgress:(int)progress {
-+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-+  status_callbacks_.Notify(VersionUpdater::UPDATING, progress, @"");
++- (nonnull NSSet<NSString *> *)allowedChannelsForUpdater:
++    (nonnull SPUUpdater *)updater
++{
++    NSString *channel = base::SysUTF8ToNSString(
++      helium::GetSelectedChannel());
++    return [NSSet setWithObject:channel];
  }
  
 -// Delegated method. Don't provide the currently installed version in the update
 -// request if the user has decided to switch channels.
 -- (BOOL)updateRequestShouldIncludeVersion:(SUUpdater*)updater {
 -  return !rebel::DidUserSelectNewChannel(profile_->GetPrefs());
-+@end  // @implementation SparkleObserver
-+
-+@implementation SparkleDriver {
-+  SparkleObserver* observer_;
-+  uint64_t content_length_;
-+  uint64_t downloaded_length_;
++- (void)updateStatus:(VersionUpdater::Status)status
++        error_string:(NSString*)error_string {
++  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
++  status_callbacks_.Notify(status, 0, error_string);
  }
  
 -// Delegated method. When we don't provide the currently installed version in
@@ -400,17 +393,14 @@
 -- (SUAppcastItem*)bestValidUpdateInAppcast:(SUAppcast*)appcast
 -                                forUpdater:(SUUpdater*)updater {
 -  SUAppcastItem* item = nil;
-+- (id)initWithObserver:(SparkleObserver*)observer {
-+  if ((self = [super init])) {
-+    observer_ = observer;
-+    content_length_ = -1;
-+    downloaded_length_ = -0;
-+  }
++- (void)updateProgress:(int)progress {
++  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
++  status_callbacks_.Notify(VersionUpdater::UPDATING, progress, @"");
++}
  
 -  if (rebel::DidUserSelectNewChannel(profile_->GetPrefs())) {
 -    auto* comparator = [SUStandardVersionComparator defaultComparator];
-+  return self;
-+}
++@end  // @implementation SparkleObserver
  
 -    for (SUAppcastItem* candidate in appcast.items) {
 -      if (!item || ([comparator compareVersion:item.versionString
@@ -419,34 +409,50 @@
 -        item = candidate;
 -      }
 -    }
-+- (void)showDownloadDidReceiveExpectedContentLength:(uint64_t)expectedContentLength {
-+  content_length_ = expectedContentLength;
++@implementation SparkleDriver {
++  SparkleObserver* observer_;
++  uint64_t content_length_;
++  uint64_t downloaded_length_;
 +}
 +
-+- (void)showDownloadDidReceiveDataOfLength:(uint64_t)length {
-+  downloaded_length_ += length;
-+
-+  if (content_length_ > 0) {
-+    double progress = ((double)downloaded_length_ / content_length_) * 100;
-+    [observer_ updateProgress:progress / 2];
++- (id)initWithObserver:(SparkleObserver*)observer {
++  if ((self = [super init])) {
++    observer_ = observer;
++    content_length_ = -1;
++    downloaded_length_ = -0;
    }
-+}
  
 -  return item;
-+- (void)showDownloadDidStartExtractingUpdate {
-+  [observer_ updateProgress:50];
++  return self;
  }
  
 -- (void)updateStatus:(VersionUpdater::Status)status
 -        error_string:(NSString*)error_string {
 -  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 -  status_callbacks_.Notify(status, error_string);
-+- (void)showExtractionReceivedProgress:(double)progress {
-+  int progress_ = 50 + (progress * 100) / 2;
-+  [observer_ updateProgress:progress_];
++- (void)showDownloadDidReceiveExpectedContentLength:(uint64_t)expectedContentLength {
++  content_length_ = expectedContentLength;
  }
  
 -@end  // @implementation SparkleObserver
++- (void)showDownloadDidReceiveDataOfLength:(uint64_t)length {
++  downloaded_length_ += length;
++
++  if (content_length_ > 0) {
++    double progress = ((double)downloaded_length_ / content_length_) * 100;
++    [observer_ updateProgress:progress / 2];
++  }
++}
++
++- (void)showDownloadDidStartExtractingUpdate {
++  [observer_ updateProgress:50];
++}
++
++- (void)showExtractionReceivedProgress:(double)progress {
++  int progress_ = 50 + (progress * 100) / 2;
++  [observer_ updateProgress:progress_];
++}
++
 +@end  // @implementation SparkleDriver
  
  std::unique_ptr<VersionUpdater> VersionUpdater::Create(
@@ -553,7 +559,7 @@
                                                     NSString* error_string) {
    DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
    if (status_callback_.is_null()) {
-@@ -322,76 +332,108 @@ void VersionUpdaterSparkle::UpdateStatus
+@@ -322,76 +332,104 @@ void VersionUpdaterSparkle::UpdateStatus
    std::u16string message;
  
    // If we have an error to display, include the detail messages
@@ -604,14 +610,14 @@
 +  SPUUpdater* updater = VersionUpdaterSparkle::sparkle_updater_;
 +  SparkleObserver* observer = VersionUpdaterSparkle::sparkle_observer_;
 +
++  if (!observer || ![observer shouldAccessUpdateService]) {
++    return;
++  }
++
    if (updater) {
 +    NSError* err = nullptr;
      updater.automaticallyChecksForUpdates = YES;
      updater.automaticallyDownloadsUpdates = YES;
-+
-+    if (!observer || ![observer shouldAccessUpdateService]) {
-+      return;
-+    }
 +
 +    if ([updater startUpdater:&err]) {
 +      [updater checkForUpdatesInBackground];
@@ -633,24 +639,24 @@
    return false;
  }
  
- std::u16string CurrentlyDownloadedVersion() {
+-std::u16string CurrentlyDownloadedVersion() {
 -  SUUpdater* updater = [SUUpdater sharedUpdater];
 -  if (!updater) {
+-    return std::u16string();
+-  }
++std::optional<std::string> CurrentlyDownloadedVersion() {
 +  SparkleObserver* observer = VersionUpdaterSparkle::sparkle_observer_;
-+
-+  if (!observer) {
-     return std::u16string();
-   }
  
 -  NSString* version = updater.nearlyUpdatedVersionString;
 -  if (!version) {
-+  if (!observer.currentlyDownloadedVersion) {
-     return std::u16string();
+-    return std::u16string();
++  if (!observer || !observer.currentlyDownloadedVersion) {
++    return std::nullopt;
    }
  
 -  return base::SysNSStringToUTF16(
 -      base::apple::ObjCCastStrict<NSString>(version));
-+  return base::SysNSStringToUTF16(observer.currentlyDownloadedVersion);
++  return base::SysNSStringToUTF8(observer.currentlyDownloadedVersion);
  }
  
  bool ApplicationIsNearlyUpdated() {
@@ -709,16 +715,18 @@
  #endif
  
  void GetInstalledVersion(InstalledVersionCallback callback) {
-@@ -24,10 +24,10 @@ void GetInstalledVersion(InstalledVersio
+@@ -24,10 +24,11 @@ void GetInstalledVersion(InstalledVersio
        FROM_HERE,
        {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
         base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
 -#if BUILDFLAG(REBEL_BROWSER)
 +#if BUILDFLAG(ENABLE_SPARKLE)
        base::BindOnce([] {
-         return InstalledAndCriticalVersion(base::Version(
+-        return InstalledAndCriticalVersion(base::Version(
 -            base::UTF16ToASCII(rebel::CurrentlyDownloadedVersion())));
-+            base::UTF16ToASCII(helium::CurrentlyDownloadedVersion())));
++        return InstalledAndCriticalVersion(
++            base::Version(helium::CurrentlyDownloadedVersion()
++                          .value_or(CurrentlyInstalledVersion())));
        }),
  #else
        base::BindOnce([] {
