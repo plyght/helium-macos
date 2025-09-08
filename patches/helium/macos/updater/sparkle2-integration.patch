@@ -201,7 +201,7 @@
      # Any circular includes must depend on the target "//chrome/browser:browser_public_dependencies".
 --- a/third_party/sparkle/Sparkle.xcodeproj/project.pbxproj
 +++ b/third_party/sparkle/Sparkle.xcodeproj/project.pbxproj
-@@ -451,6 +451,8 @@
+@@ -454,6 +454,8 @@
  		72F9EC441D5E9ED8004AC8B6 /* SPUDownloadData.h in Headers */ = {isa = PBXBuildFile; fileRef = 72F9EC421D5E9ED8004AC8B6 /* SPUDownloadData.h */; settings = {ATTRIBUTES = (Public, ); }; };
  		72F9EC451D5E9ED8004AC8B6 /* SPUDownloadData.m in Sources */ = {isa = PBXBuildFile; fileRef = 72F9EC431D5E9ED8004AC8B6 /* SPUDownloadData.m */; };
  		72F9EC481D5EA904004AC8B6 /* SPUUpdaterDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 72F9EC471D5EA7D3004AC8B6 /* SPUUpdaterDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -210,7 +210,7 @@
  		C23E885B1BE7B24F0050BB73 /* SparkleTestCodeSignApp.enc.dmg in Resources */ = {isa = PBXBuildFile; fileRef = C23E88591BE7AF890050BB73 /* SparkleTestCodeSignApp.enc.dmg */; };
  		EA1E281722B645AE004AA304 /* libbsdiff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA1E280F22B64522004AA304 /* libbsdiff.a */; };
  		EA1E281822B645CE004AA304 /* libbsdiff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA1E280F22B64522004AA304 /* libbsdiff.a */; };
-@@ -1456,8 +1458,10 @@
+@@ -1459,8 +1461,10 @@
  		72F9EC421D5E9ED8004AC8B6 /* SPUDownloadData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPUDownloadData.h; sourceTree = "<group>"; };
  		72F9EC431D5E9ED8004AC8B6 /* SPUDownloadData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPUDownloadData.m; sourceTree = "<group>"; };
  		72F9EC471D5EA7D3004AC8B6 /* SPUUpdaterDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPUUpdaterDelegate.h; sourceTree = "<group>"; };
@@ -221,7 +221,7 @@
  		A5BF4F1B1BC7668B007A052A /* SUTestWebServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUTestWebServer.h; sourceTree = "<group>"; };
  		A5BF4F1C1BC7668B007A052A /* SUTestWebServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SUTestWebServer.m; sourceTree = "<group>"; };
  		C23E88591BE7AF890050BB73 /* SparkleTestCodeSignApp.enc.dmg */ = {isa = PBXFileReference; lastKnownFileType = file; path = SparkleTestCodeSignApp.enc.dmg; sourceTree = "<group>"; };
-@@ -1720,7 +1724,7 @@
+@@ -1724,7 +1728,7 @@
  			name = Products;
  			sourceTree = "<group>";
  		};
@@ -230,7 +230,7 @@
  			isa = PBXGroup;
  			children = (
  				723DFF962B3DFF6E00628E6C /* Package.swift */,
-@@ -2086,7 +2090,6 @@
+@@ -2090,7 +2094,6 @@
  				72AEB1D629A1CB510033883E /* SPUNoUpdateFoundInfo.h */,
  				72AEB1D729A1CB510033883E /* SPUNoUpdateFoundInfo.m */,
  			);
@@ -238,7 +238,7 @@
  			name = "Other Sources";
  			sourceTree = "<group>";
  		};
-@@ -2289,6 +2292,8 @@
+@@ -2293,6 +2296,8 @@
  				7269E49C2648FC6C0088C213 /* SPUUserUpdateState+Private.h */,
  				7269E4992648F7C00088C213 /* SPUUserUpdateState.m */,
  				725CB9561C7120410064365A /* SPUUserDriver.h */,
@@ -247,7 +247,7 @@
  			);
  			name = "User Driver";
  			sourceTree = "<group>";
-@@ -2625,6 +2630,7 @@
+@@ -2629,6 +2634,7 @@
  				3772FEA913DE0B6B00F79537 /* SUVersionDisplayProtocol.h in Headers */,
  				724BB3871D32A167005D534A /* SUXPCInstallerConnection.h in Headers */,
  				724BB3A81D33461B005D534A /* SUXPCInstallerStatus.h in Headers */,
@@ -255,7 +255,7 @@
  			);
  			runOnlyForDeploymentPostprocessing = 0;
  		};
-@@ -3142,7 +3148,7 @@
+@@ -3146,7 +3152,7 @@
  				zh_HK,
  				nn,
  			);
@@ -264,7 +264,7 @@
  			packageReferences = (
  				727DBAE326B5BBFD00111F0C /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
  			);
-@@ -3703,6 +3709,7 @@
+@@ -3709,6 +3715,7 @@
  				724BB3881D32A167005D534A /* SUXPCInstallerConnection.m in Sources */,
  				724BB3A91D33461B005D534A /* SUXPCInstallerStatus.m in Sources */,
  				723AC011259DBDAA00BDB4FA /* SUReleaseNotesCommon.m in Sources */,
