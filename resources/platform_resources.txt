@@ -1,2 +1,0 @@
-generated/app.icns chrome/app/theme/chromium/mac/app.icns
-generated/document.icns chrome/app/theme/chromium/mac/document.icns
