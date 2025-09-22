@@ -1,5 +1,5 @@
 # helium-macos
-macOS development tooling & packaging for [helium-chromium](//github.com/imputnet/helium-chromium).
+macOS development tooling & packaging for [Helium](//github.com/imputnet/helium).
 
 ## Pre-release usage
 > [!IMPORTANT]
