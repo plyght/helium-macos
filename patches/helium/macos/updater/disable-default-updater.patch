@@ -1,6 +1,6 @@
 --- a/chrome/browser/ui/webui/help/version_updater_mac.mm
 +++ b/chrome/browser/ui/webui/help/version_updater_mac.mm
-@@ -118,6 +118,9 @@ class VersionUpdaterMac : public Version
+@@ -122,6 +122,9 @@ class VersionUpdaterMac : public Version
    // VersionUpdater implementation.
    void CheckForUpdate(StatusCallback status_callback,
                        PromoteCallback promote_callback) override {

@@ -29,7 +29,7 @@
    // Don't mess with the window radius before macOS 26, as concentricity was not
 --- a/chrome/browser/ui/views/frame/browser_non_client_frame_view_mac.mm
 +++ b/chrome/browser/ui/views/frame/browser_non_client_frame_view_mac.mm
-@@ -172,7 +172,7 @@ gfx::Rect BrowserNonClientFrameViewMac::
+@@ -182,7 +182,7 @@ gfx::Rect BrowserNonClientFrameViewMac::
    if (frame()->IsFullscreen()) {
      if (!browser_view()->UsesImmersiveFullscreenMode()) {
        bounds.Inset(
@@ -37,16 +37,16 @@
 +          gfx::Insets::VH(0, 0));
      }
    } else {
-     bounds.Inset(GetCaptionButtonInsets());
-@@ -391,9 +391,9 @@ void BrowserNonClientFrameViewMac::Paint
- gfx::Insets BrowserNonClientFrameViewMac::GetCaptionButtonInsets() const {
-   int button_total_width;
-   if (@available(macOS 26, *)) {
--    button_total_width = 86;
-+    button_total_width = 80;
+     // The bottom curve of the first/last tab swoops into the caption button
+@@ -481,9 +481,9 @@ gfx::Insets BrowserNonClientFrameViewMac
    } else {
--    button_total_width = 92;
-+    button_total_width = 74;
+     // If that doesn't work, fall back to some hard-coded constants.
+     if (@available(macOS 26, *)) {
+-      button_total_width = 86;
++      button_total_width = 80;
+     } else {
+-      button_total_width = 92;
++      button_total_width = 74;
+     }
    }
-   int caption_button_inset =
-       button_total_width - TabStyle::Get()->GetBottomCornerRadius();
+ 

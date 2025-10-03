@@ -184,8 +184,8 @@
  import("//chromeos/ash/components/assistant/assistant.gni")
  import("//components/compose/features.gni")
  import("//components/enterprise/buildflags/buildflags.gni")
-@@ -3242,11 +3243,9 @@ static_library("ui") {
-       "window_sizer/window_sizer_mac.mm",
+@@ -3146,11 +3147,9 @@ static_library("ui") {
+       "webui/settings/settings_utils_mac.mm",
      ]
  
 -    if (enable_updater) {
@@ -410,7 +410,7 @@
  #include "chrome/browser/policy/chrome_browser_policy_connector.h"
  #include "chrome/browser/prefs/incognito_mode_prefs.h"
  #include "chrome/browser/profiles/keep_alive/profile_keep_alive_types.h"
-@@ -867,6 +871,9 @@ class AppControllerNativeThemeObserver :
+@@ -865,6 +869,9 @@ class AppControllerNativeThemeObserver :
    NSWindow.allowsAutomaticWindowTabbing = NO;
  
    [self initShareMenu];
@@ -468,7 +468,7 @@
    # Android and ChromeOS don't support multiple browser processes, so they don't
    # employ ProcessSingleton.
    if (is_android || is_chromeos) {
-@@ -6625,6 +6633,22 @@ static_library("browser") {
+@@ -6675,6 +6683,22 @@ static_library("browser") {
      weak_frameworks = [
        "ScreenCaptureKit.framework",  # Available in macOS 12.3, stable in 13.2.
      ]
