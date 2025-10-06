@@ -45,7 +45,7 @@ ___helium_info_pull_thirdparty() {
 ___helium_configure() {
     cd "$_src_dir"
     python3 ./tools/gn/bootstrap/bootstrap.py -o out/Default/gn --skip-generate-buildfiles
-    python3 ./tools/rust/build_bindgen.py --rust-target $_rust_target
+    python3 ./tools/rust/build_bindgen.py --rust-target $_rust_target --skip-test
     ./out/Default/gn gen out/Default --fail-on-unused-args
 }
 
