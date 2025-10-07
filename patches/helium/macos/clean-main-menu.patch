@@ -11,24 +11,7 @@
                Item(IDS_CUSTOMIZE_TOUCH_BAR)
                    .tag(IDC_CUSTOMIZE_TOUCH_BAR)
                    .action(@selector(toggleTouchBarCustomizationPalette:))
-@@ -361,16 +357,6 @@ NSMenuItem* BuildHistoryMenu(NSApplicati
-       Item(IDS_HISTORY_MENU_MAC)
-           .tag(IDC_HISTORY_MENU)
-           .submenu({
--              Item(IDS_HISTORY_HOME_MAC)
--                  .command_id(IDC_HOME)
--                  .remove_if(is_pwa),
--              Item(IDS_HISTORY_BACK_MAC)
--                  .command_id(IDC_BACK),
--              Item(IDS_HISTORY_FORWARD_MAC)
--                  .command_id(IDC_FORWARD),
--              Item().is_separator()
--                  .tag(HistoryMenuBridge::kRecentlyClosedSeparator)
--                  .remove_if(is_pwa),
-               Item(IDS_HISTORY_CLOSED_MAC)
-                   .tag(HistoryMenuBridge::kRecentlyClosedTitle)
-                   .is_section_header()
-@@ -493,45 +479,24 @@ NSMenuItem* BuildTabMenu(NSApplication*
+@@ -493,7 +489,8 @@ NSMenuItem* BuildTabMenu(NSApplication*
  
    // clang-format off
    NSMenuItem* item =
@@ -37,56 +20,8 @@
 +      Item(IDS_SEARCH_ENGINES_STARTER_PACK_TABS_NAME)
            .tag(IDC_TAB_MENU)
            .submenu({
--              Item(IDS_TAB_CXMENU_NEWTABTORIGHT)
--                  .command_id(IDC_NEW_TAB_TO_RIGHT),
-+              Item(IDS_HISTORY_HOME_MAC)
-+                  .command_id(IDC_HOME)
-+                  .remove_if(is_pwa),
-+              Item(IDS_HISTORY_BACK_MAC)
-+                  .command_id(IDC_BACK),
-+              Item(IDS_HISTORY_FORWARD_MAC)
-+                  .command_id(IDC_FORWARD),
-+              Item().is_separator()
-+                  .tag(HistoryMenuBridge::kRecentlyClosedSeparator)
-+                  .remove_if(is_pwa),
-               Item(IDS_NEXT_TAB_MAC)
-                   .command_id(IDC_SELECT_NEXT_TAB),
-               Item(IDS_PREV_TAB_MAC)
-                   .command_id(IDC_SELECT_PREVIOUS_TAB),
--              Item(IDS_DUPLICATE_TAB_MAC)
--                  .command_id(IDC_DUPLICATE_TAB),
--              Item(IDS_DUPLICATE_TARGET_TAB_MAC)
--                  .command_id(IDC_DUPLICATE_TARGET_TAB)
--                  .is_alternate()
--                  .key_equivalent(@"", NSEventModifierFlagOption),
--              Item(IDS_MUTE_SITE_MAC)
--                  .command_id(IDC_WINDOW_MUTE_SITE),
--              Item(IDS_MUTE_TARGET_SITE_MAC)
--                  .command_id(IDC_MUTE_TARGET_SITE)
--                  .is_alternate()
--                  .key_equivalent(@"", NSEventModifierFlagOption),
--              Item(IDS_PIN_TAB_MAC)
--                  .command_id(IDC_WINDOW_PIN_TAB),
--              Item(IDS_PIN_TARGET_TAB_MAC)
--                  .command_id(IDC_PIN_TARGET_TAB)
--                  .is_alternate()
--                  .key_equivalent(@"", NSEventModifierFlagOption),
--              Item(IDS_GROUP_TAB_MAC)
--                  .command_id(IDC_WINDOW_GROUP_TAB),
--              Item(IDS_GROUP_TARGET_TAB_MAC)
--                  .command_id(IDC_GROUP_TARGET_TAB)
--                  .is_alternate()
--                  .key_equivalent(@"", NSEventModifierFlagOption),
--              Item(IDS_TAB_CXMENU_CLOSEOTHERTABS)
--                  .command_id(IDC_WINDOW_CLOSE_OTHER_TABS),
--              Item(IDS_TAB_CXMENU_CLOSETABSTORIGHT)
--                  .command_id(IDC_WINDOW_CLOSE_TABS_TO_RIGHT),
--              Item(IDS_MOVE_TAB_TO_NEW_WINDOW)
--                  .command_id(IDC_MOVE_TAB_TO_NEW_WINDOW),
-               Item(IDS_SEARCH_TABS)
-                   .command_id(IDC_TAB_SEARCH),
-               Item().is_separator(),
-@@ -552,15 +517,7 @@ NSMenuItem* BuildHelpMenu(NSApplication*
+               Item(IDS_TAB_CXMENU_NEWTABTORIGHT)
+@@ -552,15 +549,7 @@ NSMenuItem* BuildHelpMenu(NSApplication*
    // clang-format off
    NSMenuItem* item =
        Item(IDS_HELP_MENU_MAC)
@@ -103,7 +38,7 @@
            .Build();
    // clang-format on
  
-@@ -582,10 +539,10 @@ NSMenu* BuildMainMenu(NSApplication* nsa
+@@ -582,10 +571,10 @@ NSMenu* BuildMainMenu(NSApplication* nsa
             &BuildFileMenu,
             &BuildEditMenu,
             &BuildViewMenu,
