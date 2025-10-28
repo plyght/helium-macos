@@ -12,12 +12,12 @@
    static const char kChromeCanaryAppDirName[] = "Chrome Canary Apps.localized";
 --- a/chrome/common/chrome_features.cc
 +++ b/chrome/common/chrome_features.cc
-@@ -60,7 +60,7 @@ BASE_FEATURE(AppShimNotificationAttribut
+@@ -82,7 +82,7 @@ BASE_FEATURE(kAppShimNotificationAttribu
  
  // When enabled, app shims used by PWAs will be signed with an ad-hoc signature
  // https://crbug.com/40276068
--BASE_FEATURE(UseAdHocSigningForWebAppShims, base::FEATURE_DISABLED_BY_DEFAULT);
-+BASE_FEATURE(UseAdHocSigningForWebAppShims, base::FEATURE_ENABLED_BY_DEFAULT);
+-BASE_FEATURE(kUseAdHocSigningForWebAppShims, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_FEATURE(kUseAdHocSigningForWebAppShims, base::FEATURE_ENABLED_BY_DEFAULT);
  #endif  // BUILDFLAG(IS_MAC)
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \

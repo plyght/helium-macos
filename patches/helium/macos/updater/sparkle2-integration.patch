@@ -101,7 +101,7 @@
    import("//chrome/version.gni")
    import("//content/public/app/mac_helpers.gni")
    import("//media/cdm/library_cdm/cdm_paths.gni")
-@@ -498,6 +499,20 @@ if (is_win) {
+@@ -501,6 +502,20 @@ if (is_win) {
      } else {
        args += [ "--keystone=0" ]
      }
@@ -122,7 +122,7 @@
    }
  
    mac_app_bundle("chrome_app") {
-@@ -1135,6 +1150,10 @@ if (is_win) {
+@@ -1139,6 +1154,10 @@ if (is_win) {
  
      if (is_component_build) {
        frameworks = [ "Carbon.framework" ]
@@ -133,7 +133,7 @@
      }
  
      ldflags = [ "-ObjC" ]
-@@ -1183,6 +1202,7 @@ if (is_win) {
+@@ -1187,6 +1206,7 @@ if (is_win) {
        "//components/webapps/isolated_web_apps/preload:component_bundle",
      ]
  
@@ -141,7 +141,7 @@
      if (is_chrome_branded) {
        bundle_deps += [ ":preinstalled_apps" ]
      }
-@@ -1191,6 +1211,12 @@ if (is_win) {
+@@ -1195,6 +1215,12 @@ if (is_win) {
        bundle_deps += [ ":angle_binaries" ]
      }
  
@@ -184,7 +184,7 @@
  import("//chromeos/ash/components/assistant/assistant.gni")
  import("//components/compose/features.gni")
  import("//components/enterprise/buildflags/buildflags.gni")
-@@ -3146,11 +3147,9 @@ static_library("ui") {
+@@ -3177,11 +3178,9 @@ static_library("ui") {
        "webui/settings/settings_utils_mac.mm",
      ]
  
@@ -410,7 +410,7 @@
  #include "chrome/browser/policy/chrome_browser_policy_connector.h"
  #include "chrome/browser/prefs/incognito_mode_prefs.h"
  #include "chrome/browser/profiles/keep_alive/profile_keep_alive_types.h"
-@@ -865,6 +869,9 @@ class AppControllerNativeThemeObserver :
+@@ -872,6 +876,9 @@ class AppControllerNativeThemeObserver :
    NSWindow.allowsAutomaticWindowTabbing = NO;
  
    [self initShareMenu];
@@ -468,7 +468,7 @@
    # Android and ChromeOS don't support multiple browser processes, so they don't
    # employ ProcessSingleton.
    if (is_android || is_chromeos) {
-@@ -6675,6 +6683,22 @@ static_library("browser") {
+@@ -6715,6 +6723,22 @@ static_library("browser") {
      weak_frameworks = [
        "ScreenCaptureKit.framework",  # Available in macOS 12.3, stable in 13.2.
      ]

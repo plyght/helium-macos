@@ -11,7 +11,7 @@
                Item(IDS_CUSTOMIZE_TOUCH_BAR)
                    .tag(IDC_CUSTOMIZE_TOUCH_BAR)
                    .action(@selector(toggleTouchBarCustomizationPalette:))
-@@ -493,7 +489,8 @@ NSMenuItem* BuildTabMenu(NSApplication*
+@@ -495,7 +491,8 @@ NSMenuItem* BuildTabMenu(NSApplication*
  
    // clang-format off
    NSMenuItem* item =
@@ -21,7 +21,7 @@
            .tag(IDC_TAB_MENU)
            .submenu({
                Item(IDS_TAB_CXMENU_NEWTABTORIGHT)
-@@ -552,15 +549,7 @@ NSMenuItem* BuildHelpMenu(NSApplication*
+@@ -554,15 +551,7 @@ NSMenuItem* BuildHelpMenu(NSApplication*
    // clang-format off
    NSMenuItem* item =
        Item(IDS_HELP_MENU_MAC)
@@ -38,7 +38,7 @@
            .Build();
    // clang-format on
  
-@@ -582,10 +571,10 @@ NSMenu* BuildMainMenu(NSApplication* nsa
+@@ -584,10 +573,10 @@ NSMenu* BuildMainMenu(NSApplication* nsa
             &BuildFileMenu,
             &BuildEditMenu,
             &BuildViewMenu,
