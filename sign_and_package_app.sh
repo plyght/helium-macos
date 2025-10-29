@@ -11,7 +11,7 @@ _package_revision=$(cat "$_root_dir"/revision.txt)
 # See https://github.com/ungoogled-software/ungoogled-chromium-macos/issues/17
 xattr -cs out/Default/Helium.app
 
-if ! [ -z "${MACOS_CERTIFICATE_NAME-}" ]; then
+if ! [ -z "${MACOS_CERTIFICATE_NAME-}" ] && [ -z "${SKIP_SIGNING-}" ]; then
   APP_ENTITLEMENTS="$_root_dir/entitlements/app-entitlements.plist"
 
   if ! [ -z "${PROD_MACOS_SPECIAL_ENTITLEMENTS_PROFILE_PATH-}" ]; then
