@@ -2,7 +2,11 @@
 
 # Simple script for setting up all toolchain dependencies for building Helium on macOS
 
-brew install ninja coreutils --overwrite
+brew install ninja coreutils python@3.12 --overwrite
+brew unlink python || true
+brew link python@3.12 --force
+
+export PATH="/opt/homebrew/opt/python@3.12/bin:$PATH"
 
 if ! command -v sccache 2>&1 >/dev/null; then
   brew install sccache --overwrite

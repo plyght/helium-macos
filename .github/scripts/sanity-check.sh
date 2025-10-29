@@ -8,7 +8,9 @@ brew install ninja coreutils python@3.12 quilt llvm@20 --overwrite
 brew unlink python || true
 brew link python@3.12 llvm@20 --force
 
-pip3.12 install httplib2==0.22.0 requests Pillow --break
+export PATH="/opt/homebrew/opt/python@3.12/bin:$PATH"
+
+pip3 install httplib2==0.22.0 requests Pillow --break
 
 source dev.sh
 
