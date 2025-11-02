@@ -26,8 +26,8 @@ licensed under their [BSD 3-Clause license](LICENSE.ungoogled_chromium)).
 
 ### Software requirements
 
-* macOS 10.15+
-* Xcode 12
+* macOS 12+
+* Xcode 26
 * Homebrew
 * Perl (for creating a `.dmg` package)
 * Node.js
