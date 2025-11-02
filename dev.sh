@@ -55,7 +55,7 @@ ___helium_resources() {
     python3 "$_main_repo/utils/replace_resources.py" "$_main_repo/resources/helium_resources.txt" "$_main_repo/resources" "$_src_dir"
 }
 
-___helium_setup() {
+___helium_setup_presetup() {
     if [ -d "$_src_dir/out" ]; then
         echo "$_src_dir/out already exists" >&2
         return
@@ -69,11 +69,16 @@ ___helium_setup() {
     ___helium_setup_gn
     ___helium_info_pull_thirdparty
 
-    "$_root_dir/devutils/update_patches.sh" merge
     python3 "$_main_repo/utils/helium_version.py" \
         --tree "$_main_repo" \
         --platform-tree "$_root_dir" \
         --chromium-tree "$_src_dir"
+}
+
+___helium_setup() {
+    ___helium_setup_presetup
+
+    "$_root_dir/devutils/update_patches.sh" merge
 
     cd "$_src_dir"
     quilt push -a --refresh
@@ -188,32 +193,46 @@ __helium_menu() {
     set -e
     case $1 in
         setup) ___helium_setup;;
-        build) ___helium_build;;
-        run) ___helium_run;;
-        pull) ___helium_pull;;
+        presetup) ___helium_setup_presetup;;
+        configure) ___helium_configure;;
+        resources) ___helium_resources;;
+
         sub|unsub) ___helium_substitution "$1";;
         namesub|nameunsub) ___helium_name_substitution "$1";;
+
         merge) ___helium_patches_merge;;
         unmerge) ___helium_patches_unmerge;;
         push) ___helium_quilt_push;;
         pop) ___helium_quilt_pop;;
-        resources) ___helium_resources;;
+        pull) ___helium_pull;;
+
+        build) ___helium_build;;
+        run) ___helium_run;;
         reset) ___helium_reset;;
         *)
-            echo "usage: he (setup | build | run | sub | unsub | namesub | nameunsub | merge | unmerge | push | pop | pull | reset)" >&2
-            echo "\tsetup - sets up the dev environment for the first itme" >&2
-            echo "\tbuild - prepares a development build binary" >&2
-            echo "\trun - runs a development build of helium with dev data dir & ui devtools enabled" >&2
+            echo "usage: he <command>" >&2
+            echo "\tsetup - sets up the dev environment fully for the first time" >&2
+            echo "\t         equivalent of: [presetup, merge, push, configure]" >&2
+            echo "\tpresetup - downloads sources, sets up GN, and prepares third-party dependencies" >&2
+            echo "\tconfigure - generates build configuration and tools" >&2
+            echo "\tresources - generates and copies helium resources (such as icons)" >&2
+
+            echo "\n" >&2
             echo "\tsub - apply google domain and name substitutions" >&2
-            echo "\tunsub - undo google domain substitutions" >&2
+            echo "\tunsub - undo google domain and name substitutions" >&2
             echo "\tnamesub - apply only name substitutions" >&2
-            echo "\tnameunsub - undo name substitutions" >&2
+            echo "\tnameunsub - undo only name substitutions" >&2
+
+            echo "\n" >&2
             echo "\tmerge - merges all patches" >&2
             echo "\tunmerge - unmerges all patches" >&2
             echo "\tpush - applies all patches" >&2
             echo "\tpop - undoes all patches" >&2
-            echo "\tresources - copies helium resources (such as icons)" >&2
-            echo "\tpull - undoes all patches, pulls, redoes all patches" >&2
+            echo "\tpull - undoes all patches, pulls from git, redoes all patches" >&2
+
+            echo "\n" >&2
+            echo "\tbuild - builds a development binary" >&2
+            echo "\trun - runs a development build of helium with dev data dir & ui devtools enabled" >&2
             echo "\treset - nukes everything" >&2
     esac
 }
