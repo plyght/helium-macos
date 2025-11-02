@@ -1,13 +1,19 @@
 # helium-macos
-macOS development tooling & packaging for [Helium](//github.com/imputnet/helium).
+macOS packaging & development tooling for [Helium](https://github.com/imputnet/helium).
+
+## Building and development
+macOS is our primary development platform, so it's the recommended environment for
+developing new Helium features.
+
+*[Go to docs/building.md](docs/building.md)*
 
 ## Credits
 This repo is based on
 [ungoogled-chromium-macos](https://github.com/ungoogled-software/ungoogled-chromium-macos),
-but is pretty heavily modified for Helium. Huge shout-out to everyone behind ungoogled-chromium,
+but heavily modified for Helium. Special thanks to everyone behind ungoogled-chromium,
 they made working with Chromium infinitely easier.
 
-Big thank you to [Depot](https://depot.dev/) for sponsoring our runners, which handle the macOS
+A huge thank you to [Depot](https://depot.dev/) for sponsoring our runners, which handle the macOS
 builds of Helium. Their high-performance infrastructure lets us compile and package Helium at least
 8 times faster than with GitHub-hosted runners, allowing us to release new builds within hours, not days.
 
