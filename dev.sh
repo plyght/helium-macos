@@ -189,6 +189,24 @@ ___helium_quilt_pop() {
     cd "$_src_dir" && quilt pop -a
 }
 
+___helium_validate() {
+    if [ "$1" = "config" ]; then
+        python3 "$_main_repo/devutils/validate_config.py"
+    elif [ "$1" = "patches" ]; then
+        if [ ! -f "patches/series.merged" ]; then
+            echo "patches/series.merged doesn't exist. did you forget to merge?" >&2
+            return 1
+        fi
+        python3 "$_main_repo/devutils/validate_patches.py" \
+            -l "$_src_dir" \
+            -s patches/series.merged
+    elif [ "$1" = "series" ]; then
+        "$_root_dir/devutils/check_patch_files.sh"
+    else
+        echo "unknown validate action. usage: he validate <config|patches|series>" >&2
+    fi
+}
+
 __helium_menu() {
     set -e
     case $1 in
@@ -205,6 +223,8 @@ __helium_menu() {
         push) ___helium_quilt_push;;
         pop) ___helium_quilt_pop;;
         pull) ___helium_pull;;
+
+        validate) ___helium_validate "$2";;
 
         build) ___helium_build;;
         run) ___helium_run;;
@@ -229,6 +249,11 @@ __helium_menu() {
             echo "\tpush - applies all patches" >&2
             echo "\tpop - undoes all patches" >&2
             echo "\tpull - undoes all patches, pulls from git, redoes all patches" >&2
+
+            echo "\n" >&2
+            echo "\tvalidate config - validates the build configuration" >&2
+            echo "\tvalidate patches - validates that patches are applied correctly" >&2
+            echo "\tvalidate series - checks the consistency of the series file" >&2
 
             echo "\n" >&2
             echo "\tbuild - builds a development binary" >&2
