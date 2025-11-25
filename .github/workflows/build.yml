@@ -4,8 +4,13 @@ on:
     inputs:
       runner:
         required: false
-        description: 'Runner image name'
-        default: 'macos-latest'
+        description: "Runner image name"
+        default: "macos-latest"
+      do-release:
+        required: false
+        type: boolean
+        description: "Create a release after build is done"
+        default: false
 
 permissions:
   contents: write
@@ -28,6 +33,7 @@ jobs:
     needs: build
     name: Release macOS binaries of Helium
     runs-on: ${{ inputs.runner }}
+    if: ${{ inputs.do-release }}
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
