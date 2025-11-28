@@ -2,28 +2,42 @@
 
 set -o pipefail
 
-# Sometimes Xcode is 26.0, sometimes 26. We make sure it's usable no matter its name.
-BASE_XCODE_PATH=/Applications/Xcode_26.0.app
+# Find the default Xcode or Xcode 26.x installation
+# On macos-26 runner, default is at /Applications/Xcode.app or /Applications/Xcode_26.0.app
 TARGET_XCODE_PATH=/Applications/Xcode_26.app
 
-if [ ! -e "$BASE_XCODE_PATH" ] && [ ! -e "$TARGET_XCODE_PATH" ]; then
+# Try to find any Xcode 26 installation
+if [ -e "/Applications/Xcode.app" ]; then
+  BASE_XCODE_PATH=/Applications/Xcode.app
+elif [ -e "/Applications/Xcode_26.0.app" ]; then
+  BASE_XCODE_PATH=/Applications/Xcode_26.0.app
+elif [ -e "/Applications/Xcode_26.0.1.app" ]; then
+  BASE_XCODE_PATH=/Applications/Xcode_26.0.1.app
+elif [ -e "/Applications/Xcode_26.1.app" ]; then
+  BASE_XCODE_PATH=/Applications/Xcode_26.1.app
+elif [ -e "/Applications/Xcode_26.1.1.app" ]; then
+  BASE_XCODE_PATH=/Applications/Xcode_26.1.1.app
+else
   echo "Failed to find a suitable version of Xcode"
+  ls -la /Applications/ | grep -i xcode || true
   exit 1
 fi
 
-if [ -e "$BASE_XCODE_PATH" ] && [ ! -e "$TARGET_XCODE_PATH" ]; then
-  REAL_XCODE_PATH="$(readlink -f "$BASE_XCODE_PATH")"
-  sudo mv "$REAL_XCODE_PATH" "$TARGET_XCODE_PATH"
-fi
+echo "Found Xcode at: $BASE_XCODE_PATH"
 
-# Cleanup any other Xcode versions
-sudo mv "$TARGET_XCODE_PATH" /Applications/tmp_Xcode_26.app
-sudo rm -rf /Applications/Xcode*
-sudo mv /Applications/tmp_Xcode_26.app "$TARGET_XCODE_PATH"
+# Create target symlink/path if needed
+if [ ! -e "$TARGET_XCODE_PATH" ]; then
+  if [ -L "$BASE_XCODE_PATH" ]; then
+    REAL_XCODE_PATH="$(readlink -f "$BASE_XCODE_PATH")"
+    sudo ln -s "$REAL_XCODE_PATH" "$TARGET_XCODE_PATH"
+  else
+    sudo ln -s "$BASE_XCODE_PATH" "$TARGET_XCODE_PATH"
+  fi
+fi
 
 # Switch to target Xcode and clean simulators
 sudo xcode-select --switch "$TARGET_XCODE_PATH"
-sudo xcrun simctl delete all
+sudo xcrun simctl delete all || true
 
 # Make sure metal toolchain is installed
-xcodebuild -downloadComponent MetalToolchain
+xcodebuild -downloadComponent MetalToolchain || true
