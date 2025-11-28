@@ -60,9 +60,9 @@ jobs:
         run: |
           git submodule update --init
           cd helium-chromium
-          git remote add vertical-tabs https://github.com/thenhnn/helium.git || true
+          git remote add vertical-tabs https://x-access-token:${{ github.token }}@github.com/thenhnn/helium.git || true
           git fetch vertical-tabs nhnn/vertical-tabs
-          git checkout vertical-tabs/nhnn/vertical-tabs
+          git checkout FETCH_HEAD
       - name: Copy GitHub specific scripts to git-root folder
         run: cp -va ./.github/scripts/ ./
       - name: Disable Spotlight

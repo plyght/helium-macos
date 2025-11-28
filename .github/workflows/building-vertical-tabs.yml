@@ -30,9 +30,9 @@ jobs:
         run: |
           git submodule update --init
           cd helium-chromium
-          git remote add vertical-tabs https://github.com/thenhnn/helium.git || true
+          git remote add vertical-tabs https://x-access-token:${{ github.token }}@github.com/thenhnn/helium.git || true
           git fetch vertical-tabs nhnn/vertical-tabs
-          git checkout vertical-tabs/nhnn/vertical-tabs
+          git checkout FETCH_HEAD
           echo "Current helium-chromium commit:"
           git log -1 --oneline
       - uses: ./.github/actions/prepare-environment
