@@ -6,7 +6,7 @@ on:
       runner:
         required: false
         description: "Runner image name"
-        default: "macos-14"
+        default: "macos-26"
       arch:
         required: false
         description: "Architecture to build (arm64, x86_64, or both)"
