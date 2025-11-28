@@ -28,7 +28,7 @@ echo "Found Xcode at: $BASE_XCODE_PATH"
 # Create target symlink/path if needed
 if [ ! -e "$TARGET_XCODE_PATH" ]; then
   if [ -L "$BASE_XCODE_PATH" ]; then
-    REAL_XCODE_PATH="$(readlink -f "$BASE_XCODE_PATH")"
+    REAL_XCODE_PATH="$(greadlink -f "$BASE_XCODE_PATH")"
     sudo ln -s "$REAL_XCODE_PATH" "$TARGET_XCODE_PATH"
   else
     sudo ln -s "$BASE_XCODE_PATH" "$TARGET_XCODE_PATH"

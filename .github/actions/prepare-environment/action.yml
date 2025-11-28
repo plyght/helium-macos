@@ -9,6 +9,9 @@ runs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.13'
+    - name: Install coreutils early (needed for greadlink)
+      run: brew install coreutils --overwrite
+      shell: bash
     - name: Prepare Xcode
       run: ./github_prepare_xcode.sh
       shell: bash
