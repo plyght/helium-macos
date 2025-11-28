@@ -60,7 +60,7 @@ jobs:
         run: |
           git submodule update --init
           cd helium-chromium
-          git remote add vertical-tabs https://x-access-token:${{ github.token }}@github.com/thenhnn/helium.git || true
+          git remote add vertical-tabs https://x-access-token:${{ github.token }}@github.com/thenhnn/helium-chromium.git || true
           git fetch vertical-tabs nhnn/vertical-tabs
           git checkout FETCH_HEAD
       - name: Copy GitHub specific scripts to git-root folder
